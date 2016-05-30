@@ -21,20 +21,21 @@
 
 package cn.limc.androidcharts.demo.activity;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.Menu;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.limc.androidcharts.demo.R;
 import cn.limc.androidcharts.axis.Axis;
+import cn.limc.androidcharts.demo.R;
+import cn.limc.androidcharts.demo.common.BaseActivity;
 import cn.limc.androidcharts.entity.DateValueEntity;
 import cn.limc.androidcharts.entity.IStickEntity;
 import cn.limc.androidcharts.entity.LineEntity;
 import cn.limc.androidcharts.entity.ListChartData;
 import cn.limc.androidcharts.view.BOLLMASlipCandleStickChart;
-import cn.limc.androidcharts.demo.common.BaseActivity;
-import android.os.Bundle;
-import android.graphics.Color;
-import android.view.Menu;
 
 public class BOLLMASlipCandleStickChartActivity extends BaseActivity {
 
