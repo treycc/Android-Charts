@@ -51,7 +51,7 @@ import android.view.MotionEvent;
 public class SlipStickChart extends StickChart implements ISlipable {
 
 //	public static final int DEFAULT_DISPLAY_FROM = 0;
-//	public static final int DEFAULT_DISPLAY_NUMBER = 50;
+//	public static final int DEFAULT_DISP0----LAY_NUMBER = 50;
 //	public static final int DEFAULT_MIN_DISPLAY_NUMBER = 20;
 //	public static final int DEFAULT_ZOOM_BASE_LINE = ZOOM_BASE_LINE_CENTER;
 //

@@ -40,11 +40,13 @@
 	        	android:textColor="@drawable/white" />
             <TextView
 	    	    android:id="@+id/tv_date_time"
-	    	    android:layout_below="@+id/tv_current_percent"
-	        	android:layout_width="match_parent"
+				android:layout_width="match_parent"
 	        	android:layout_height="match_parent"
 	        	android:gravity="center_horizontal|bottom"
-	        	android:textColor="@drawable/lightgray" />
+	        	android:textColor="@drawable/lightgray"
+				android:layout_below="@+id/tv_current_percent"
+				android:layout_alignLeft="@+id/tv_current_percent"
+				android:layout_alignStart="@+id/tv_current_percent" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="0dip"

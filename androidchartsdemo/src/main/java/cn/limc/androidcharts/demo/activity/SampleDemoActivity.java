@@ -937,10 +937,10 @@ public class SampleDemoActivity extends BaseActivity {
         mBollmaslipcandlestickchart.setLatitudeColor(Color.GRAY);
         mBollmaslipcandlestickchart.setLongitudeColor(Color.GRAY);
         mBollmaslipcandlestickchart.setBorderColor(Color.LTGRAY);
-        mBollmaslipcandlestickchart.setLongitudeFontColor(Color.LTGRAY);
-        mBollmaslipcandlestickchart.setLatitudeFontColor(Color.LTGRAY);
+        mBollmaslipcandlestickchart.setLongitudeFontColor(Color.BLACK);
+        mBollmaslipcandlestickchart.setLatitudeFontColor(Color.BLACK);
 
-        mBollmaslipcandlestickchart.setCrossLinesColor(Color.LTGRAY);
+        mBollmaslipcandlestickchart.setCrossLinesColor(Color.BLACK);
         
         // 最大纬线数
         mBollmaslipcandlestickchart.setLatitudeNum(3);
@@ -955,7 +955,7 @@ public class SampleDemoActivity extends BaseActivity {
 
 		mBollmaslipcandlestickchart.setDisplayNumber(30);
 
-		mBollmaslipcandlestickchart.setMinDisplayNumber(10);
+		mBollmaslipcandlestickchart.setMinDisplayNumber(5);
 
 //        mBollmaslipcandlestickchart
 //                .setZoomBaseLine(IZoomable.ZOOM_BASE_LINE_CENTER);
@@ -965,10 +965,10 @@ public class SampleDemoActivity extends BaseActivity {
         mBollmaslipcandlestickchart.setDisplayLatitude(true);
         mBollmaslipcandlestickchart.setDisplayLongitude(true);
 
-        mBollmaslipcandlestickchart.setDataQuadrantPaddingTop(5);
-        mBollmaslipcandlestickchart.setDataQuadrantPaddingBottom(5);
-        mBollmaslipcandlestickchart.setDataQuadrantPaddingLeft(5);
-        mBollmaslipcandlestickchart.setDataQuadrantPaddingRight(5);
+        mBollmaslipcandlestickchart.setDataQuadrantPaddingTop(0);
+        mBollmaslipcandlestickchart.setDataQuadrantPaddingBottom(0);
+        mBollmaslipcandlestickchart.setDataQuadrantPaddingLeft(0);
+        mBollmaslipcandlestickchart.setDataQuadrantPaddingRight(0);
 //      mBollmaslipcandlestickchart.setAxisYTitleQuadrantWidth(50);
 //      mBollmaslipcandlestickchart.setAxisXTitleQuadrantHeight(20);
         mBollmaslipcandlestickchart
