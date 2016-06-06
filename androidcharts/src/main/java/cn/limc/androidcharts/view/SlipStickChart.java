@@ -61,7 +61,7 @@ public class SlipStickChart extends StickChart implements ISlipable {
 //	protected int zoomBaseLine = DEFAULT_ZOOM_BASE_LINE;
 	
 	protected OnSlipGestureListener onSlipGestureListener = new OnSlipGestureListener();
-	protected IGestureDetector slipGestureDetector = new LongPressSlipGestureDetector<ISlipable>(this);
+	protected IGestureDetector slipGestureDetector = new LongPressSlipGestureDetector<>(this);
 
 	protected boolean detectSlipEvent = true;
 

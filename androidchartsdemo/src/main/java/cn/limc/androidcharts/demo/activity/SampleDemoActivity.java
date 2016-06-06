@@ -955,7 +955,9 @@ public class SampleDemoActivity extends BaseActivity {
 
 		mBollmaslipcandlestickchart.setDisplayNumber(30);
 
-		mBollmaslipcandlestickchart.setMinDisplayNumber(5);
+		mBollmaslipcandlestickchart.setMinDisplayNumber(20);
+
+		mBollmaslipcandlestickchart.setStickSpacing(10);
 
 //        mBollmaslipcandlestickchart
 //                .setZoomBaseLine(IZoomable.ZOOM_BASE_LINE_CENTER);
@@ -1368,8 +1370,8 @@ public class SampleDemoActivity extends BaseActivity {
     	
     	if (currentChartData == null || isRefresh) {
     		System.out.println("...refresh...");
-    		
-    		isRefresh = false;
+
+			isRefresh = false;
     		
     		String strFileNm = "KLineDayData.txt";
         	

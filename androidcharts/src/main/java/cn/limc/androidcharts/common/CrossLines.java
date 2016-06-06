@@ -264,7 +264,7 @@ public class CrossLines implements ICrossLines {
             float textWidth = mPaintBoxText.measureText(textToDraw);
 
             PointF boxHS = new PointF(inChart.getTouchPoint().x - textWidth / 2.0f, inChart.getBorderWidth());
-            PointF boxHE = new PointF(inChart.getTouchPoint().x + textWidth / 2.0f, inChart.getBorderWidth() + fontSize + 4);
+            PointF boxHE = new PointF(inChart.getTouchPoint().x + textWidth / 2.0f, inChart.getBorderWidth() + fontSize + 40);
 
             // draw a rectangle
             canvas.drawRect(boxHS.x, boxHS.y, boxHE.x, boxHE.y, mPaintBox);

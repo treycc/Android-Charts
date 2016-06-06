@@ -136,7 +136,7 @@ public class SectionDataCursor extends SimpleDataCursor {
 		if (this.displayNumber < this.minDisplayNumber){
 			return false;
 		}
-		if (step <= 2){
+		if (step <= 0){
 			return false;
 		}
 		if (this.displayFrom + this.displayNumber + step > this.maxDisplayNumber) {
@@ -156,7 +156,7 @@ public class SectionDataCursor extends SimpleDataCursor {
 		if (this.displayNumber < this.minDisplayNumber){
 			return false;
 		}
-		if (step <= 2){
+		if (step <= 0){
 			return false;
 		}
 		if (this.displayFrom - step < 0) {
@@ -172,7 +172,7 @@ public class SectionDataCursor extends SimpleDataCursor {
 		if (this.displayNumber < this.minDisplayNumber){
 			return false;
 		}
-		if (step <= 2){
+		if (step <= 0){
 			return false;
 		}
 		if (this.displayNumber == this.minDisplayNumber){
@@ -201,7 +201,7 @@ public class SectionDataCursor extends SimpleDataCursor {
 		if (this.displayNumber < this.minDisplayNumber){
 			return false;
 		}
-		if (step <= 2){
+		if (step <= 0){
 			return false;
 		}
 		if (this.displayFrom ==0 && this.displayNumber == this.maxDisplayNumber){

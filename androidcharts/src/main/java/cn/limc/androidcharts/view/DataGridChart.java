@@ -33,6 +33,7 @@ import cn.limc.androidcharts.common.SectionDataCursor;
 import cn.limc.androidcharts.entity.IChartData;
 import cn.limc.androidcharts.entity.IMeasurable;
 import cn.limc.androidcharts.entity.IStickEntity;
+import cn.limc.androidcharts.entity.OHLCEntity;
 import cn.limc.androidcharts.event.IDisplayCursorListener;
 import cn.limc.androidcharts.event.ITouchedIndexListener;
 
@@ -74,7 +75,8 @@ public abstract class DataGridChart extends GridChart implements IDataCursor {
 	public abstract IDataCursor getDataCursor();
 
 	public abstract IChartData<IStickEntity> getChartData();
-	
+
+
 	protected  ITouchedIndexListener touchedIndexListener;
 	
 	/**

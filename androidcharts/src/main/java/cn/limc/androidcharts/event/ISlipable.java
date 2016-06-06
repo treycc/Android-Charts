@@ -39,7 +39,7 @@ public interface ISlipable extends IZoomable {
 	static final int SLIP_DIRECTION_BOTTOM = 3;
 	static final int SLIP_DIRECTION_LEFT = 4;
 	
-	static final int SLIP_STEP = 4;
+	static final int SLIP_STEP = 2;
 	
 	void moveLeft();
 	void moveRight();

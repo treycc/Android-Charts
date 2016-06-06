@@ -27,6 +27,7 @@ import cn.limc.androidcharts.common.SectionDataCursor;
 import cn.limc.androidcharts.entity.IChartData;
 import cn.limc.androidcharts.entity.IMeasurable;
 import cn.limc.androidcharts.entity.IStickEntity;
+import cn.limc.androidcharts.entity.OHLCEntity;
 import cn.limc.androidcharts.event.IGestureDetector;
 import cn.limc.androidcharts.event.IZoomable;
 import cn.limc.androidcharts.event.IDisplayCursorListener;
@@ -481,6 +482,7 @@ public class StickChart extends PeriodDataGridChart implements IZoomable{
 	public IChartData<IStickEntity> getChartData() {
 		return this.stickData;
 	}
+
 
 	public IDataCursor getDataCursor(){
 		return this.dataCursor;

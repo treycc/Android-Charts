@@ -31,6 +31,7 @@ import cn.limc.androidcharts.demo.common.BaseActivity;
 import android.os.Bundle;
 import android.graphics.Color;
 import android.view.Menu;
+import android.view.ViewConfiguration;
 
 public class SlipStickChartActivity extends BaseActivity {
 
@@ -92,6 +93,8 @@ public class SlipStickChartActivity extends BaseActivity {
         slipstickchart.setDisplayLatitude(true);
         slipstickchart.setDisplayLongitude(true);
         slipstickchart.setBackgroundColor(Color.BLACK);
+
+
 
         slipstickchart.setDataMultiple(100);
         slipstickchart.setAxisYDecimalFormat("#,##0.00");
