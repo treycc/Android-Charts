@@ -21,6 +21,7 @@
 
 package cn.limc.androidcharts.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.limc.androidcharts.axis.Axis;
@@ -44,7 +45,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 /**
- * 
  * <p>
  * GridChart is base type of all the charts that use a grid to display like
  * line-chart stick-chart etc. GridChart implemented a simple grid with basic
@@ -56,283 +56,277 @@ import android.view.MotionEvent;
  * <p>
  * GridChart是所有网格图表的基础类对象，它实现了基本的网格图表功能，这些功能将被它的继承类使用
  * </p>
- * 
+ *
  * @author limc
  * @version v1.0 2011/05/30 14:19:50
- * 
  */
 public class GridChart extends AbstractBaseChart implements ITouchable {
-	/**
-	 * <p>
-	 * Touched point inside of grid
-	 * </p>
-	 * <p>
-	 * タッチしたポイント
-	 * </p>
-	 * <p>
-	 * 单点触控的选中点
-	 * </p>
-	 */
-	protected PointF touchPoint;
+    /**
+     * <p>
+     * Touched point inside of grid
+     * </p>
+     * <p>
+     * タッチしたポイント
+     * </p>
+     * <p>
+     * 单点触控的选中点
+     * </p>
+     */
+    protected PointF touchPoint;
 
-	/**
-	 * <p>
-	 * Event will notify objects' list
-	 * </p>
-	 * <p>
-	 * イベント通知対象リスト
-	 * </p>
-	 * <p>
-	 * 事件通知对象列表
-	 * </p>
-	 */
-	
-	protected OnTouchGestureListener onTouchGestureListener = new OnTouchGestureListener();
-	protected IGestureDetector touchGestureDetector = new TouchGestureDetector<ITouchable>(this);
-	protected IQuadrant dataQuadrant = new DataQuadrant(this);
-	protected HorizontalAxis axisX = new HorizontalAxis(this,Axis.AXIS_X_POSITION_BOTTOM);
-	protected VerticalAxis axisY = new VerticalAxis(this, Axis.AXIS_Y_POSITION_LEFT);
-	protected CrossLines crossLines = new CrossLines(this);
-	protected SimpleGrid simpleGrid = new SimpleGrid(this);
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @param context
-	 * 
-	 * @see cn.limc.androidcharts.view.AbstractBaseChart#BaseChart(Context)
-	 */
-	public GridChart(Context context) {
-		super(context);
-	}
+    /**
+     * <p>
+     * Event will notify objects' list
+     * </p>
+     * <p>
+     * イベント通知対象リスト
+     * </p>
+     * <p>
+     * 事件通知对象列表
+     * </p>
+     */
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @param context
-	 * 
-	 * @param attrs
-	 * 
-	 * @param defStyle
-	 * 
-	 * @see cn.limc.androidcharts.view.AbstractBaseChart#BaseChart(Context,
-	 * AttributeSet, int)
-	 */
-	public GridChart(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+    protected OnTouchGestureListener onTouchGestureListener = new OnTouchGestureListener();
+    protected IGestureDetector touchGestureDetector = new TouchGestureDetector<ITouchable>(this);
+    protected IQuadrant dataQuadrant = new DataQuadrant(this);
+    protected HorizontalAxis axisX = new HorizontalAxis(this, Axis.AXIS_X_POSITION_BOTTOM);
+    protected VerticalAxis axisY = new VerticalAxis(this, Axis.AXIS_Y_POSITION_LEFT);
+    protected CrossLines crossLines = new CrossLines(this);
+    protected SimpleGrid simpleGrid = new SimpleGrid(this);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @param context
-	 * 
-	 * @param attrs
-	 * 
-	 * @see cn.limc.androidcharts.view.AbstractBaseChart#BaseChart(Context,
-	 * AttributeSet)
-	 */
-	public GridChart(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @param context
+     *
+     * @see cn.limc.androidcharts.view.AbstractBaseChart#BaseChart(Context)
+     */
+    public GridChart(Context context) {
+        super(context);
+    }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @param context
+     *
+     * @param attrs
+     *
+     * @param defStyle
+     *
+     * @see cn.limc.androidcharts.view.AbstractBaseChart#BaseChart(Context,
+     * AttributeSet, int)
+     */
+    public GridChart(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
 
-	public void drawData(Canvas canvas){
-
-	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * <p>Called when is going to draw this chart<p> <p>チャートを書く前、メソッドを呼ぶ<p>
-	 * <p>绘制图表时调用<p>
-	 * 
-	 * @param canvas
-	 * 
-	 * @see android.view.View#onDraw(android.graphics.Canvas)
-	 */
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-		
-		axisX.draw(canvas);
-		axisY.draw(canvas);
-		simpleGrid.drawGrid(canvas);
-
-		this.drawData(canvas);
-
-		simpleGrid.drawTitles(canvas);
-		crossLines.draw(canvas);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * <p>Called when chart is touched<p> <p>チャートをタッチしたら、メソッドを呼ぶ<p>
-	 * <p>图表点击时调用<p>
-	 * 
-	 * @param event
-	 * 
-	 * @see android.view.View#onTouchEvent(MotionEvent)
-	 */
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (!isValidTouchPoint(event.getX(),event.getY())) {
-			return false;
-		}
-		return touchGestureDetector.onTouchEvent(event);
-	}
-	
-	protected boolean isValidTouchPoint (float x , float y) {
-		if (x < dataQuadrant.getPaddingStartX()
-				|| x > dataQuadrant.getPaddingEndX()) {
-			return false;
-		}
-		if (y < dataQuadrant.getPaddingStartY()
-				|| y > dataQuadrant.getPaddingEndY()) {
-			return false;
-		}
-		return true;
-	}
-	/**
-	 * <p>
-	 * calculate degree title on X axis
-	 * </p>
-	 * <p>
-	 * X軸の目盛を計算する
-	 * </p>
-	 * <p>
-	 * 计算X轴上显示的坐标值
-	 * </p>
-	 * 
-	 * @param value
-	 *            <p>
-	 *            value for calculate
-	 *            </p>
-	 *            <p>
-	 *            計算有用データ
-	 *            </p>
-	 *            <p>
-	 *            计算用数据
-	 *            </p>
-	 * 
-	 * @return String
-	 *         <p>
-	 *         degree
-	 *         </p>
-	 *         <p>
-	 *         目盛
-	 *         </p>
-	 *         <p>
-	 *         坐标值
-	 *         </p>
-	 */
-	public String getAxisXGraduate(Object value) {
-		float valueLength = ((Float) value).floatValue()
-				- dataQuadrant.getPaddingStartX();
-		return String.valueOf(valueLength / this.dataQuadrant.getPaddingWidth());
-	}
-
-	/**
-	 * <p>
-	 * calculate degree title on Y axis
-	 * </p>
-	 * <p>
-	 * Y軸の目盛を計算する
-	 * </p>
-	 * <p>
-	 * 计算Y轴上显示的坐标值
-	 * </p>
-	 * 
-	 * @param value
-	 *            <p>
-	 *            value for calculate
-	 *            </p>
-	 *            <p>
-	 *            計算有用データ
-	 *            </p>
-	 *            <p>
-	 *            计算用数据
-	 *            </p>
-	 * 
-	 * @return String
-	 *         <p>
-	 *         degree
-	 *         </p>
-	 *         <p>
-	 *         目盛
-	 *         </p>
-	 *         <p>
-	 *         坐标值
-	 *         </p>
-	 */
-	public String getAxisYGraduate(Object value) {
-		float valueLength = ((Float) value).floatValue()
-				- dataQuadrant.getPaddingStartY();
-		return String
-				.valueOf(1f - valueLength / this.dataQuadrant.getPaddingHeight());
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @param context
+     *
+     * @param attrs
+     *
+     * @see cn.limc.androidcharts.view.AbstractBaseChart#BaseChart(Context,
+     * AttributeSet)
+     */
+    public GridChart(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
 
+    public void drawData(Canvas canvas) {
 
-	public String calcAxisXGraduate() {
-		return "";
-	}
+    }
 
-	public String calcAxisYGraduate() {
-		return "";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * <p>Called when is going to draw this chart<p> <p>チャートを書く前、メソッドを呼ぶ<p>
+     * <p>绘制图表时调用<p>
+     *
+     * @param canvas
+     *
+     * @see android.view.View#onDraw(android.graphics.Canvas)
+     */
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
 
-	public long touchPointAxisXValue() {
-		return 0;
-	}
+        axisX.draw(canvas);
+        axisY.draw(canvas);
+        simpleGrid.drawGrid(canvas);
 
-	public double touchPointAxisYValue() {
-		return 0;
-	}
+        this.drawData(canvas);
 
-	/**
-	 * @return the axisXColor
-	 */
-	public int getAxisXColor() {
-		return axisX.getLineColor();
-	}
+        simpleGrid.drawTitles(canvas);
+        crossLines.draw(canvas);
+    }
 
-	/**
-	 * @param axisXColor
-	 *            the axisXColor to set
-	 */
-	public void setAxisXColor(int axisXColor) {
-		this.axisX.setLineColor(axisXColor);
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * <p>Called when chart is touched<p> <p>チャートをタッチしたら、メソッドを呼ぶ<p>
+     * <p>图表点击时调用<p>
+     *
+     * @param event
+     *
+     * @see android.view.View#onTouchEvent(MotionEvent)
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!isValidTouchPoint(event.getX(), event.getY())) {
+            return false;
+        }
+        return touchGestureDetector.onTouchEvent(event);
+    }
 
-	/**
-	 * @return the axisYColor
-	 */
-	public int getAxisYColor() {
-		return axisY.getLineColor();
-	}
+    protected boolean isValidTouchPoint(float x, float y) {
+        if (x < dataQuadrant.getPaddingStartX()
+                || x > dataQuadrant.getPaddingEndX()) {
+            return false;
+        }
+        if (y < dataQuadrant.getPaddingStartY()
+                || y > dataQuadrant.getPaddingEndY()) {
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 * @param axisYColor
-	 *            the axisYColor to set
-	 */
-	public void setAxisYColor(int axisYColor) {
-		this.axisY.setLineColor(axisYColor);
-	}
-	/**
-	 * @return the axisWidth
-	 */
-	public float getAxisXWidth() {
-		return axisX.getLineWidth();
-	}
+    /**
+     * <p>
+     * calculate degree title on X axis
+     * </p>
+     * <p>
+     * X軸の目盛を計算する
+     * </p>
+     * <p>
+     * 计算X轴上显示的坐标值
+     * </p>
+     *
+     * @param value <p>
+     *              value for calculate
+     *              </p>
+     *              <p>
+     *              計算有用データ
+     *              </p>
+     *              <p>
+     *              计算用数据
+     *              </p>
+     * @return String
+     * <p>
+     * degree
+     * </p>
+     * <p>
+     * 目盛
+     * </p>
+     * <p>
+     * 坐标值
+     * </p>
+     */
+    public String getAxisXGraduate(Object value) {
+        float valueLength = ((Float) value).floatValue()
+                - dataQuadrant.getPaddingStartX();
+        return String.valueOf(valueLength / this.dataQuadrant.getPaddingWidth());
+    }
 
-	/**
-	 * @param axisWidth
-	 *            the axisWidth to set
-	 */
-	public void setAxisXWidth(float axisWidth) {
-		this.axisX.setLineWidth(axisWidth);
-	}
+    /**
+     * <p>
+     * calculate degree title on Y axis
+     * </p>
+     * <p>
+     * Y軸の目盛を計算する
+     * </p>
+     * <p>
+     * 计算Y轴上显示的坐标值
+     * </p>
+     *
+     * @param value <p>
+     *              value for calculate
+     *              </p>
+     *              <p>
+     *              計算有用データ
+     *              </p>
+     *              <p>
+     *              计算用数据
+     *              </p>
+     * @return String
+     * <p>
+     * degree
+     * </p>
+     * <p>
+     * 目盛
+     * </p>
+     * <p>
+     * 坐标值
+     * </p>
+     */
+    public String getAxisYGraduate(Object value) {
+        float valueLength = ((Float) value).floatValue()
+                - dataQuadrant.getPaddingStartY();
+        return String
+                .valueOf(1f - valueLength / this.dataQuadrant.getPaddingHeight());
+    }
+
+
+    public List<String> calcAxisXGraduate() {
+        return new ArrayList<>();
+    }
+
+    public String calcAxisYGraduate() {
+        return "";
+    }
+
+    public long touchPointAxisXValue() {
+        return 0;
+    }
+
+    public double touchPointAxisYValue() {
+        return 0;
+    }
+
+    /**
+     * @return the axisXColor
+     */
+    public int getAxisXColor() {
+        return axisX.getLineColor();
+    }
+
+    /**
+     * @param axisXColor the axisXColor to set
+     */
+    public void setAxisXColor(int axisXColor) {
+        this.axisX.setLineColor(axisXColor);
+    }
+
+    /**
+     * @return the axisYColor
+     */
+    public int getAxisYColor() {
+        return axisY.getLineColor();
+    }
+
+    /**
+     * @param axisYColor the axisYColor to set
+     */
+    public void setAxisYColor(int axisYColor) {
+        this.axisY.setLineColor(axisYColor);
+    }
+
+    /**
+     * @return the axisWidth
+     */
+    public float getAxisXWidth() {
+        return axisX.getLineWidth();
+    }
+
+    /**
+     * @param axisWidth the axisWidth to set
+     */
+    public void setAxisXWidth(float axisWidth) {
+        this.axisX.setLineWidth(axisWidth);
+    }
 //
 //	/**
 //	 * @return the axisMarginLeft
@@ -365,308 +359,295 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
 //	}
 
 
+    /**
+     * @return the longitudeTitles
+     */
+    public List<String> getLongitudeTitles() {
+        return simpleGrid.getLongitudeTitles();
+    }
 
-	/**
-	 * @return the longitudeTitles
-	 */
-	public List<String> getLongitudeTitles() {
-		return simpleGrid.getLongitudeTitles();
-	}
+    /**
+     * @param longitudeTitles the longitudeTitles to set
+     */
+    public void setLongitudeTitles(List<String> longitudeTitles) {
+        this.simpleGrid.setLongitudeTitles(longitudeTitles);
+    }
 
-	/**
-	 * @param longitudeTitles
-	 *            the longitudeTitles to set
-	 */
-	public void setLongitudeTitles(List<String> longitudeTitles) {
-		this.simpleGrid.setLongitudeTitles(longitudeTitles);
-	}
+    /**
+     * @return the latitudeTitles
+     */
+    public List<String> getLatitudeTitles() {
+        return simpleGrid.getLatitudeTitles();
+    }
 
-	/**
-	 * @return the latitudeTitles
-	 */
-	public List<String> getLatitudeTitles() {
-		return simpleGrid.getLatitudeTitles();
-	}
+    /**
+     * @param latitudeTitles the latitudeTitles to set
+     */
+    public void setLatitudeTitles(List<String> latitudeTitles) {
+        this.simpleGrid.setLatitudeTitles(latitudeTitles);
+    }
 
-	/**
-	 * @param latitudeTitles
-	 *            the latitudeTitles to set
-	 */
-	public void setLatitudeTitles(List<String> latitudeTitles) {
-	    this.simpleGrid.setLatitudeTitles(latitudeTitles);
-	}
+    /**
+     * @return the latitudeMaxTitleLength
+     */
+    public int getLatitudeMaxTitleLength() {
+        return simpleGrid.getLatitudeMaxTitleLength();
+    }
 
-	/**
-	 * @return the latitudeMaxTitleLength
-	 */
-	public int getLatitudeMaxTitleLength() {
-		return simpleGrid.getLatitudeMaxTitleLength();
-	}
-
-	/**
-	 * @param latitudeMaxTitleLength
-	 *            the latitudeMaxTitleLength to set
-	 */
-	public void setLatitudeMaxTitleLength(int latitudeMaxTitleLength) {
-		this.simpleGrid.setLatitudeMaxTitleLength(latitudeMaxTitleLength) ;
-	}
+    /**
+     * @param latitudeMaxTitleLength the latitudeMaxTitleLength to set
+     */
+    public void setLatitudeMaxTitleLength(int latitudeMaxTitleLength) {
+        this.simpleGrid.setLatitudeMaxTitleLength(latitudeMaxTitleLength);
+    }
 
 
-	/**
-	 * @return the clickPostX
-	 */
-	@Deprecated
-	public float getClickPostX() {
-		if (touchPoint == null) {
-			return 0f;
-		}else{
-			return touchPoint.x;
-		}
+    /**
+     * @return the clickPostX
+     */
+    @Deprecated
+    public float getClickPostX() {
+        if (touchPoint == null) {
+            return 0f;
+        } else {
+            return touchPoint.x;
+        }
 
-	}
+    }
 
-	/**
-	 * @param clickPostX
-	 *            the clickPostX to set
-	 */
-	@Deprecated
-	public void setClickPostX(float clickPostX) {
-		if (clickPostX >= 0) {
-			this.touchPoint.x = clickPostX;
-		}
-	}
+    /**
+     * @param clickPostX the clickPostX to set
+     */
+    @Deprecated
+    public void setClickPostX(float clickPostX) {
+        if (clickPostX >= 0) {
+            this.touchPoint.x = clickPostX;
+        }
+    }
 
-	/**
-	 * @return the clickPostY
-	 */
-	@Deprecated
-	public float getClickPostY() {
-		if (touchPoint == null) {
-			return 0f;
-		} else {
-			return touchPoint.y;
-		}
-	}
+    /**
+     * @return the clickPostY
+     */
+    @Deprecated
+    public float getClickPostY() {
+        if (touchPoint == null) {
+            return 0f;
+        } else {
+            return touchPoint.y;
+        }
+    }
 
-	/**
-	 * @param touchPoint.y
-	 *            the clickPostY to set
-	 */
-	@Deprecated
-	public void setClickPostY(float clickPostY) {
-		if (clickPostY >= 0) {
-			this.touchPoint.y = clickPostY;
-		}
-	}
+    /**
+     * @param touchPoint.y the clickPostY to set
+     */
+    @Deprecated
+    public void setClickPostY(float clickPostY) {
+        if (clickPostY >= 0) {
+            this.touchPoint.y = clickPostY;
+        }
+    }
 
-	/**
-	 * @return the touchPoint
-	 */
-	public PointF getTouchPoint() {
-		return touchPoint;
-	}
+    /**
+     * @return the touchPoint
+     */
+    public PointF getTouchPoint() {
+        return touchPoint;
+    }
 
-	/**
-	 * @param touchPoint
-	 *            the touchPoint to set
-	 */
-	public void setTouchPoint(PointF touchPoint) {
-		this.touchPoint = touchPoint;
-	}
+    /**
+     * @param touchPoint the touchPoint to set
+     */
+    public void setTouchPoint(PointF touchPoint) {
+        this.touchPoint = touchPoint;
+    }
 
-	/**
-	 * @return the axisXPosition
-	 */
-	public int getAxisXPosition() {
-		return axisX.getPosition();
-	}
+    /**
+     * @return the axisXPosition
+     */
+    public int getAxisXPosition() {
+        return axisX.getPosition();
+    }
 
-	/**
-	 * @param axisXPosition
-	 *            the axisXPosition to set
-	 */
-	public void setAxisXPosition(int axisXPosition) {
-		this.axisX.setPosition(axisXPosition);
-	}
+    /**
+     * @param axisXPosition the axisXPosition to set
+     */
+    public void setAxisXPosition(int axisXPosition) {
+        this.axisX.setPosition(axisXPosition);
+    }
 
-	/**
-	 * @return the axisYPosition
-	 */
-	public int getAxisYPosition() {
-		return axisY.getPosition();
-	}
+    /**
+     * @return the axisYPosition
+     */
+    public int getAxisYPosition() {
+        return axisY.getPosition();
+    }
 
-	/**
-	 * @param axisYPosition
-	 *            the axisYPosition to set
-	 */
-	public void setAxisYPosition(int axisYPosition) {
-		this.axisY.setPosition(axisYPosition);
-	}
+    /**
+     * @param axisYPosition the axisYPosition to set
+     */
+    public void setAxisYPosition(int axisYPosition) {
+        this.axisY.setPosition(axisYPosition);
+    }
 
-	/* (non-Javadoc)
-	 *  
-	 * @see cn.limc.androidcharts.event.ITouchable#touchDown() 
-	 */
-	public void touchDown(PointF pt) {
-		this.touchPoint = pt;
-		this.postInvalidate();
-	}
+    /* (non-Javadoc)
+     *
+     * @see cn.limc.androidcharts.event.ITouchable#touchDown()
+     */
+    public void touchDown(PointF pt) {
+        this.touchPoint = pt;
+        this.postInvalidate();
+    }
 
-	/* (non-Javadoc)
-	 *  
-	 * @see cn.limc.androidcharts.event.ITouchable#touchMoved() 
-	 */
-	public void touchMoved(PointF pt) {
-		this.touchPoint = pt;
-		this.postInvalidate();
-	}
+    /* (non-Javadoc)
+     *
+     * @see cn.limc.androidcharts.event.ITouchable#touchMoved()
+     */
+    public void touchMoved(PointF pt) {
+        this.touchPoint = pt;
+        this.postInvalidate();
+    }
 
-	/* (non-Javadoc)
-	 *  
-	 * @see cn.limc.androidcharts.event.ITouchable#touchUp() 
-	 */
-	public void touchUp(PointF pt) {
-		this.touchPoint = pt;
-		this.postInvalidate();
-	}
+    /* (non-Javadoc)
+     *
+     * @see cn.limc.androidcharts.event.ITouchable#touchUp()
+     */
+    public void touchUp(PointF pt) {
+        this.touchPoint = pt;
+        this.postInvalidate();
+    }
 
-	/* (non-Javadoc)
-	 *
-	 * @see cn.limc.androidcharts.event.ITouchable#longPressDown()
-	 */
-	public void longPressDown(PointF pt) {
-		this.touchPoint = pt;
-		this.crossLines.setDisplayCrossXOnTouch(true);
-		this.crossLines.setDisplayCrossYOnTouch(true);
-		this.postInvalidate();
-	}
+    /* (non-Javadoc)
+     *
+     * @see cn.limc.androidcharts.event.ITouchable#longPressDown()
+     */
+    public void longPressDown(PointF pt) {
+        this.touchPoint = pt;
+        this.crossLines.setDisplayCrossXOnTouch(true);
+        this.crossLines.setDisplayCrossYOnTouch(true);
+        this.postInvalidate();
+    }
 
-	/* (non-Javadoc)
-	 *
-	 * @see cn.limc.androidcharts.event.ITouchable#longPressMoved()
-	 */
-	public void longPressMoved(PointF pt) {
-		this.touchPoint = pt;
-		this.postInvalidate();
-	}
+    /* (non-Javadoc)
+     *
+     * @see cn.limc.androidcharts.event.ITouchable#longPressMoved()
+     */
+    public void longPressMoved(PointF pt) {
+        this.touchPoint = pt;
+        this.postInvalidate();
+    }
 
-	/* (non-Javadoc)
-	 *
-	 * @see cn.limc.androidcharts.event.ITouchable#longPressUp()
-	 */
-	public void longPressUp(PointF pt) {
-		this.touchPoint = pt;
-		this.crossLines.setDisplayCrossXOnTouch(false);
-		this.crossLines.setDisplayCrossYOnTouch(false);
-		this.postInvalidate();
-	}
+    /* (non-Javadoc)
+     *
+     * @see cn.limc.androidcharts.event.ITouchable#longPressUp()
+     */
+    public void longPressUp(PointF pt) {
+        this.touchPoint = pt;
+        this.crossLines.setDisplayCrossXOnTouch(false);
+        this.crossLines.setDisplayCrossYOnTouch(false);
+        this.postInvalidate();
+    }
 
-	/* (non-Javadoc)
-	 * 
-	 * @param listener 
-	 * @see cn.limc.androidcharts.event.ITouchable#setOnTouchGestureListener(cn.limc.androidcharts.event.OnTouchGestureListener) 
-	 */
-	public void setOnTouchGestureListener(OnTouchGestureListener listener) {
-		this.onTouchGestureListener = listener;
-	}
+    /* (non-Javadoc)
+     *
+     * @param listener
+     * @see cn.limc.androidcharts.event.ITouchable#setOnTouchGestureListener(cn.limc.androidcharts.event.OnTouchGestureListener)
+     */
+    public void setOnTouchGestureListener(OnTouchGestureListener listener) {
+        this.onTouchGestureListener = listener;
+    }
 
-	/* (non-Javadoc)
-	 * 
-	 * @return 
-	 * @see cn.limc.androidcharts.event.ITouchable#getOnTouchGestureListener() 
-	 */
-	public OnTouchGestureListener getOnTouchGestureListener() {
-		return onTouchGestureListener;
-	}
+    /* (non-Javadoc)
+     *
+     * @return
+     * @see cn.limc.androidcharts.event.ITouchable#getOnTouchGestureListener()
+     */
+    public OnTouchGestureListener getOnTouchGestureListener() {
+        return onTouchGestureListener;
+    }
 
-	/**
-	 * @return the touchGestureDetector
-	 */
-	public IGestureDetector getTouchGestureDetector() {
-		return touchGestureDetector;
-	}
+    /**
+     * @return the touchGestureDetector
+     */
+    public IGestureDetector getTouchGestureDetector() {
+        return touchGestureDetector;
+    }
 
-	/**
-	 * @param touchGestureDetector the touchGestureDetector to set
-	 */
-	public void setTouchGestureDetector(IGestureDetector touchGestureDetector) {
-		this.touchGestureDetector = touchGestureDetector;
-	}
+    /**
+     * @param touchGestureDetector the touchGestureDetector to set
+     */
+    public void setTouchGestureDetector(IGestureDetector touchGestureDetector) {
+        this.touchGestureDetector = touchGestureDetector;
+    }
 
-	/**
-	 * @return the dataQuadrant
-	 */
-	public IQuadrant getDataQuadrant() {
-		return dataQuadrant;
-	}
+    /**
+     * @return the dataQuadrant
+     */
+    public IQuadrant getDataQuadrant() {
+        return dataQuadrant;
+    }
 
-	/**
-	 * @param dataQuadrant the dataQuadrant to set
-	 */
-	public void setDataQuadrant(IQuadrant dataQuadrant) {
-		this.dataQuadrant = dataQuadrant;
-	}
-	
-	/**
-	 * @return the paddingTop
-	 */
-	public float getDataQuadrantPaddingTop() {
-		return dataQuadrant.getPaddingTop();
-	}
+    /**
+     * @param dataQuadrant the dataQuadrant to set
+     */
+    public void setDataQuadrant(IQuadrant dataQuadrant) {
+        this.dataQuadrant = dataQuadrant;
+    }
 
-	/**
-	 * @param paddingTop
-	 *            the paddingTop to set
-	 */
-	public void setDataQuadrantPaddingTop(float quadrantPaddingTop) {
-		dataQuadrant.setPaddingTop(quadrantPaddingTop);
-	}
+    /**
+     * @return the paddingTop
+     */
+    public float getDataQuadrantPaddingTop() {
+        return dataQuadrant.getPaddingTop();
+    }
 
-	/**
-	 * @return the paddingLeft
-	 */
-	public float getDataQuadrantPaddingLeft() {
-		return dataQuadrant.getPaddingLeft();
-	}
+    /**
+     * @param paddingTop the paddingTop to set
+     */
+    public void setDataQuadrantPaddingTop(float quadrantPaddingTop) {
+        dataQuadrant.setPaddingTop(quadrantPaddingTop);
+    }
 
-	/**
-	 * @param paddingLeft
-	 *            the paddingLeft to set
-	 */
-	public void setDataQuadrantPaddingLeft(float quadrantPaddingLeft) {
-		dataQuadrant.setPaddingLeft(quadrantPaddingLeft);
-	}
+    /**
+     * @return the paddingLeft
+     */
+    public float getDataQuadrantPaddingLeft() {
+        return dataQuadrant.getPaddingLeft();
+    }
 
-	/**
-	 * @return the paddingBottom
-	 */
-	public float getDataQuadrantPaddingBottom() {
-		return dataQuadrant.getPaddingBottom();
-	}
+    /**
+     * @param paddingLeft the paddingLeft to set
+     */
+    public void setDataQuadrantPaddingLeft(float quadrantPaddingLeft) {
+        dataQuadrant.setPaddingLeft(quadrantPaddingLeft);
+    }
 
-	/**
-	 * @param paddingBottom
-	 *            the paddingBottom to set
-	 */
-	public void setDataQuadrantPaddingBottom(float quadrantPaddingBottom) {
-		dataQuadrant.setPaddingBottom(quadrantPaddingBottom);
-	}
+    /**
+     * @return the paddingBottom
+     */
+    public float getDataQuadrantPaddingBottom() {
+        return dataQuadrant.getPaddingBottom();
+    }
 
-	/**
-	 * @return the paddingRight
-	 */
-	public float getDataQuadrantPaddingRight() {
-		return dataQuadrant.getPaddingRight();
-	}
+    /**
+     * @param paddingBottom the paddingBottom to set
+     */
+    public void setDataQuadrantPaddingBottom(float quadrantPaddingBottom) {
+        dataQuadrant.setPaddingBottom(quadrantPaddingBottom);
+    }
 
-	/**
-	 * @param paddingRight
-	 *            the paddingRight to set
-	 */
-	public void setDataQuadrantPaddingRight(float quadrantPaddingRight) {
-		dataQuadrant.setPaddingRight(quadrantPaddingRight);
-	}
+    /**
+     * @return the paddingRight
+     */
+    public float getDataQuadrantPaddingRight() {
+        return dataQuadrant.getPaddingRight();
+    }
+
+    /**
+     * @param paddingRight the paddingRight to set
+     */
+    public void setDataQuadrantPaddingRight(float quadrantPaddingRight) {
+        dataQuadrant.setPaddingRight(quadrantPaddingRight);
+    }
 
     /**
      * @return the axisX
@@ -723,67 +704,63 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     public void setSimpleGrid(SimpleGrid simpleGrid) {
         this.simpleGrid = simpleGrid;
     }
-	
-	/**
-	 * @return the crossLinesColor
-	 */
-	public int getCrossLinesColor() {
-		return crossLines.getCrossLinesColor();
-	}
 
-	/**
-	 * @param crossLinesColor
-	 *            the crossLinesColor to set
-	 */
-	public void setCrossLinesColor(int crossLinesColor) {
-		this.crossLines.setCrossLinesColor(crossLinesColor);
-	}
+    /**
+     * @return the crossLinesColor
+     */
+    public int getCrossLinesColor() {
+        return crossLines.getCrossLinesColor();
+    }
 
-	/**
-	 * @return the crossLinesFontColor
-	 */
-	public int getCrossLinesFontColor() {
-		return crossLines.getCrossLinesFontColor();
-	}
+    /**
+     * @param crossLinesColor the crossLinesColor to set
+     */
+    public void setCrossLinesColor(int crossLinesColor) {
+        this.crossLines.setCrossLinesColor(crossLinesColor);
+    }
 
-	/**
-	 * @param crossLinesFontColor
-	 *            the crossLinesFontColor to set
-	 */
-	public void setCrossLinesFontColor(int crossLinesFontColor) {
-		this.crossLines.setCrossLinesFontColor(crossLinesFontColor);
-	}
-	
-	/**
-	 * @return the displayCrossXOnTouch
-	 */
-	public boolean isDisplayCrossXOnTouch() {
-		return crossLines.isDisplayCrossXOnTouch();
-	}
+    /**
+     * @return the crossLinesFontColor
+     */
+    public int getCrossLinesFontColor() {
+        return crossLines.getCrossLinesFontColor();
+    }
 
-	/**
-	 * @param displayCrossXOnTouch
-	 *            the displayCrossXOnTouch to set
-	 */
-	public void setDisplayCrossXOnTouch(boolean displayCrossXOnTouch) {
-		this.crossLines.setDisplayCrossXOnTouch(displayCrossXOnTouch) ;
-	}
+    /**
+     * @param crossLinesFontColor the crossLinesFontColor to set
+     */
+    public void setCrossLinesFontColor(int crossLinesFontColor) {
+        this.crossLines.setCrossLinesFontColor(crossLinesFontColor);
+    }
 
-	/**
-	 * @return the displayCrossYOnTouch
-	 */
-	public boolean isDisplayCrossYOnTouch() {
-		return crossLines.isDisplayCrossYOnTouch();
-	}
+    /**
+     * @return the displayCrossXOnTouch
+     */
+    public boolean isDisplayCrossXOnTouch() {
+        return crossLines.isDisplayCrossXOnTouch();
+    }
 
-	/**
-	 * @param displayCrossYOnTouch
-	 *            the displayCrossYOnTouch to set
-	 */
-	public void setDisplayCrossYOnTouch(boolean displayCrossYOnTouch) {
-	    this.crossLines.setDisplayCrossYOnTouch(displayCrossYOnTouch) ;
-	}
-	
+    /**
+     * @param displayCrossXOnTouch the displayCrossXOnTouch to set
+     */
+    public void setDisplayCrossXOnTouch(boolean displayCrossXOnTouch) {
+        this.crossLines.setDisplayCrossXOnTouch(displayCrossXOnTouch);
+    }
+
+    /**
+     * @return the displayCrossYOnTouch
+     */
+    public boolean isDisplayCrossYOnTouch() {
+        return crossLines.isDisplayCrossYOnTouch();
+    }
+
+    /**
+     * @param displayCrossYOnTouch the displayCrossYOnTouch to set
+     */
+    public void setDisplayCrossYOnTouch(boolean displayCrossYOnTouch) {
+        this.crossLines.setDisplayCrossYOnTouch(displayCrossYOnTouch);
+    }
+
     /**
      * @return the displayLongitudeTitle
      */
@@ -792,8 +769,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param displayLongitudeTitle
-     *            the displayLongitudeTitle to set
+     * @param displayLongitudeTitle the displayLongitudeTitle to set
      */
     public void setDisplayLongitudeTitle(boolean displayLongitudeTitle) {
         this.simpleGrid.setDisplayLongitudeTitle(displayLongitudeTitle);
@@ -807,8 +783,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param displayLatitudeTitle
-     *            the displayLatitudeTitle to set
+     * @param displayLatitudeTitle the displayLatitudeTitle to set
      */
     public void setDisplayLatitudeTitle(boolean displayLatitudeTitle) {
         this.simpleGrid.setDisplayLatitudeTitle(displayLatitudeTitle);
@@ -822,8 +797,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param latitudeNum
-     *            the latitudeNum to set
+     * @param latitudeNum the latitudeNum to set
      */
     public void setLatitudeNum(int latitudeNum) {
         this.simpleGrid.setLatitudeNum(latitudeNum);
@@ -837,8 +811,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param longitudeNum
-     *            the longitudeNum to set
+     * @param longitudeNum the longitudeNum to set
      */
     public void setLongitudeNum(int longitudeNum) {
         this.simpleGrid.setLongitudeNum(longitudeNum);
@@ -852,8 +825,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param displayLongitude
-     *            the displayLongitude to set
+     * @param displayLongitude the displayLongitude to set
      */
     public void setDisplayLongitude(boolean displayLongitude) {
         this.simpleGrid.setDisplayLongitude(displayLongitude);
@@ -867,8 +839,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param dashLongitude
-     *            the dashLongitude to set
+     * @param dashLongitude the dashLongitude to set
      */
     public void setDashLongitude(boolean dashLongitude) {
         this.simpleGrid.setDashLongitude(dashLongitude);
@@ -882,8 +853,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param displayLatitude
-     *            the displayLatitude to set
+     * @param displayLatitude the displayLatitude to set
      */
     public void setDisplayLatitude(boolean displayLatitude) {
         this.simpleGrid.setDisplayLatitude(displayLatitude);
@@ -897,8 +867,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param dashLatitude
-     *            the dashLatitude to set
+     * @param dashLatitude the dashLatitude to set
      */
     public void setDashLatitude(boolean dashLatitude) {
         this.simpleGrid.setDashLatitude(dashLatitude);
@@ -912,13 +881,12 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param dashEffect
-     *            the dashEffect to set
+     * @param dashEffect the dashEffect to set
      */
     public void setDashEffect(PathEffect dashEffect) {
         this.setDashEffect(dashEffect);
     }
-    
+
     /**
      * @return the longitudeWidth
      */
@@ -955,8 +923,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param longitudeFontColor
-     *            the longitudeFontColor to set
+     * @param longitudeFontColor the longitudeFontColor to set
      */
     public void setLongitudeFontColor(int longitudeFontColor) {
         this.simpleGrid.setLongitudeFontColor(longitudeFontColor);
@@ -970,8 +937,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param longitudeFontSize
-     *            the longitudeFontSize to set
+     * @param longitudeFontSize the longitudeFontSize to set
      */
     public void setLongitudeFontSize(int longitudeFontSize) {
         this.simpleGrid.setLongitudeFontSize(longitudeFontSize);
@@ -985,8 +951,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param latitudeFontColor
-     *            the latitudeFontColor to set
+     * @param latitudeFontColor the latitudeFontColor to set
      */
     public void setLatitudeFontColor(int latitudeFontColor) {
         this.simpleGrid.setLatitudeFontColor(latitudeFontColor);
@@ -1000,13 +965,12 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param latitudeFontSize
-     *            the latitudeFontSize to set
+     * @param latitudeFontSize the latitudeFontSize to set
      */
     public void setLatitudeFontSize(int latitudeFontSize) {
         this.simpleGrid.setLatitudeFontSize(latitudeFontSize);
     }
-    
+
     /**
      * @return the longitudeColor
      */
@@ -1015,8 +979,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param longitudeColor
-     *            the longitudeColor to set
+     * @param longitudeColor the longitudeColor to set
      */
     public void setLongitudeColor(int longitudeColor) {
         this.simpleGrid.setLongitudeColor(longitudeColor);
@@ -1030,8 +993,7 @@ public class GridChart extends AbstractBaseChart implements ITouchable {
     }
 
     /**
-     * @param latitudeColor
-     *            the latitudeColor to set
+     * @param latitudeColor the latitudeColor to set
      */
     public void setLatitudeColor(int latitudeColor) {
         this.simpleGrid.setLatitudeColor(latitudeColor);

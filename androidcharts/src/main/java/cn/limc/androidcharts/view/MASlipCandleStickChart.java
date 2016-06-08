@@ -21,6 +21,7 @@
 
 package cn.limc.androidcharts.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.limc.androidcharts.entity.DateValueEntity;
@@ -28,8 +29,12 @@ import cn.limc.androidcharts.entity.LineEntity;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 
 /**
@@ -120,28 +125,30 @@ public class MASlipCandleStickChart extends SlipCandleStickChart {
     }
 
     @Override
-    public String calcAxisXGraduate() {
+    public List<String> calcAxisXGraduate() {
         List<LineEntity<DateValueEntity>> linesData = getLinesData();
-        String text = "MA5:";
+        List<String> stringList = new ArrayList<>();
         for (int i = 0; i < linesData.size(); i++) {
             List<DateValueEntity> lineData1 = linesData.get(i).getLineData();
             float value = lineData1.get(getSelectedIndex()).getValue();
             switch (i) {
                 case 0:
-                    text = text + value;
+                    stringList.add("MA5:" + value);
                     break;
                 case 1:
-                    text = text + " MA10:" + value;
+                    stringList.add("MA10:" + value);
                     break;
                 case 2:
-                    text = text + " MA25:" + value;
+                    stringList.add("MA25:" + value);
                     break;
                 default:
                     break;
             }
         }
+        stringList.add(linesData.get(0).getLineData().get(getSelectedIndex()).getDate() + "");
 
-        return text;
+
+        return stringList;
 
     }
 
