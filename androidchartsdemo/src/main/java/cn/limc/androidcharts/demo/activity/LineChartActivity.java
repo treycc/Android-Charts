@@ -30,13 +30,16 @@ import cn.limc.androidcharts.entity.DateValueEntity;
 import cn.limc.androidcharts.entity.LineEntity;
 import cn.limc.androidcharts.view.LineChart;
 import cn.limc.androidcharts.demo.common.BaseActivity;
+import cn.limc.androidcharts.view.Minutes2chart;
+
 import android.os.Bundle;
 import android.graphics.Color;
 import android.view.Menu;
+import android.widget.Toast;
 
 public class LineChartActivity extends BaseActivity {
 
-    LineChart linechart;
+    Minutes2chart linechart;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +56,9 @@ public class LineChartActivity extends BaseActivity {
     }
 
     private void initLineChart() {
-        this.linechart = (LineChart) findViewById(R.id.linechart);
+        this.linechart = (Minutes2chart) findViewById(R.id.linechart);
         List<LineEntity<DateValueEntity>> lines = new ArrayList<LineEntity<DateValueEntity>>();
+        List<LineEntity<DateValueEntity>> malines = new ArrayList<LineEntity<DateValueEntity>>();
 
         // 计算5日均线
         LineEntity<DateValueEntity> MA5 = new LineEntity<DateValueEntity>();
@@ -68,7 +72,7 @@ public class LineChartActivity extends BaseActivity {
         MA10.setTitle("MA10");
         MA10.setLineColor(Color.RED);
         MA10.setLineData(initMA(10));
-        lines.add(MA10);
+        malines.add(MA10);
 
         // 计算25日均线
         LineEntity<DateValueEntity> MA25 = new LineEntity<DateValueEntity>();
@@ -105,5 +109,6 @@ public class LineChartActivity extends BaseActivity {
 
         // 为chart1增加均线
         linechart.setLinesData(lines);
+        linechart.setMaLinesData(malines);
     }
 }
