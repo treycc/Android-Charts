@@ -5,17 +5,22 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import java.util.List;
 
 import cn.limc.androidcharts.common.IFlexableGrid;
 import cn.limc.androidcharts.entity.DateValueEntity;
 import cn.limc.androidcharts.entity.LineEntity;
+import cn.limc.androidcharts.event.IGestureDetector;
+import cn.limc.androidcharts.event.ISlipable;
+import cn.limc.androidcharts.event.LongPressSlipGestureDetector;
+import cn.limc.androidcharts.event.OnSlipGestureListener;
 
 /**
  * Created by treycc on 2016/6/8.
  */
-public class Minutes2chart extends LineChart {
+public class Minutes2chart extends LineChart implements ISlipable {
 
 
     private List<LineEntity<DateValueEntity>> areas;
@@ -37,6 +42,27 @@ public class Minutes2chart extends LineChart {
     public void drawData(Canvas canvas) {
         super.drawData(canvas);
         drawAreas(canvas);
+    }
+
+    protected OnSlipGestureListener onSlipGestureListener = new OnSlipGestureListener();
+
+    protected IGestureDetector slipGestureDetector = new LongPressSlipGestureDetector<ISlipable>(this);
+
+    protected boolean detectSlipEvent = true;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!isValidTouchPoint(event.getX(), event.getY())) {
+            return false;
+        }
+        if (null == linesData || linesData.size() == 0) {
+            return false;
+        }
+        if (detectSlipEvent) {
+            return slipGestureDetector.onTouchEvent(event);
+        }else{
+            return true;
+        }
     }
 
     protected void drawAreas(Canvas canvas) {
@@ -68,7 +94,6 @@ public class Minutes2chart extends LineChart {
 
             Paint mPaint = new Paint();
             mPaint.setColor(line.getLineColor());
-            mPaint.setStrokeWidth(4);
             mPaint.setAlpha(70);
             mPaint.setAntiAlias(true);
 
@@ -139,5 +164,25 @@ public class Minutes2chart extends LineChart {
             //右侧显示
             dataCursor.setDisplayFrom(datasize - getDisplayNumber());
         }
+    }
+
+    @Override
+    public void moveLeft() {
+
+    }
+
+    @Override
+    public void moveRight() {
+
+    }
+
+    @Override
+    public void setOnSlipGestureListener(OnSlipGestureListener listener) {
+        this.onSlipGestureListener = listener;
+    }
+
+    @Override
+    public OnSlipGestureListener getOnSlipGestureListener() {
+        return onSlipGestureListener;
     }
 }

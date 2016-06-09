@@ -24,6 +24,7 @@ package cn.limc.androidcharts.demo.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.limc.androidcharts.common.ICrossLines;
 import cn.limc.androidcharts.demo.R;
 import cn.limc.androidcharts.axis.Axis;
 import cn.limc.androidcharts.entity.DateValueEntity;
@@ -72,6 +73,7 @@ public class LineChartActivity extends BaseActivity {
         MA10.setTitle("MA10");
         MA10.setLineColor(Color.RED);
         MA10.setLineData(initMA(10));
+        lines.add(MA10);
         malines.add(MA10);
 
         // 计算25日均线
@@ -89,15 +91,23 @@ public class LineChartActivity extends BaseActivity {
         linechart.setLatitudeColor(Color.GRAY);
         linechart.setLatitudeFontColor(Color.WHITE);
         linechart.setLongitudeColor(Color.GRAY);
+
+
         linechart.setMaxValue(280);
         linechart.setMinValue(240);
         linechart.setMaxPointNum(36);
+        linechart.setLatitudeNum(5);
+        linechart.setLongitudeNum(6);
+        linechart.setMaxDisplayNumber(126);
+        linechart.setMinDisplayNumber(126);
+
+
+
+
         linechart.setDisplayLongitudeTitle(true);
         linechart.setDisplayLatitudeTitle(true);
         linechart.setDisplayLatitude(true);
         linechart.setDisplayLongitude(true);
-        linechart.setLatitudeNum(5);
-        linechart.setLongitudeNum(6);
         linechart.setDataQuadrantPaddingTop(5);
         linechart.setDataQuadrantPaddingBottom(5);
         linechart.setDataQuadrantPaddingLeft(5);
@@ -106,6 +116,8 @@ public class LineChartActivity extends BaseActivity {
         // linechart.setAxisXTitleQuadrantHeight(20);
         linechart.setAxisXPosition(Axis.AXIS_X_POSITION_BOTTOM);
         linechart.setAxisYPosition(Axis.AXIS_Y_POSITION_RIGHT);
+
+        linechart.setBindCrossLinesToStick(ICrossLines.BIND_TO_TYPE_BOTH);
 
         // 为chart1增加均线
         linechart.setLinesData(lines);

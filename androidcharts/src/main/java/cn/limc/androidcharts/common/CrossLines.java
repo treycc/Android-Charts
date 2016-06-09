@@ -36,6 +36,7 @@ import java.util.List;
 import cn.limc.androidcharts.axis.Axis;
 import cn.limc.androidcharts.view.DataGridChart;
 import cn.limc.androidcharts.view.GridChart;
+import cn.limc.androidcharts.view.StickChart;
 
 /**
  * <p>en</p>
@@ -238,8 +239,15 @@ public class CrossLines implements ICrossLines {
 
 
         Path path = new Path();
-        path.moveTo(touchPoint.x, inChart.getBorderWidth());
-        path.lineTo(touchPoint.x, lineVLength);
+        if (inChart instanceof StickChart) {
+            int stickSpacing = ((StickChart) inChart).getStickSpacing();
+            path.moveTo(touchPoint.x - stickSpacing / 2.0f, inChart.getBorderWidth());
+            path.lineTo(touchPoint.x - stickSpacing / 2.0f, lineVLength);
+        } else {
+            path.moveTo(touchPoint.x, inChart.getBorderWidth());
+            path.lineTo(touchPoint.x, lineVLength);
+        }
+
         canvas.drawPath(path, mPaint);
 
 
@@ -263,7 +271,7 @@ public class CrossLines implements ICrossLines {
             float textWidth = mPaintBoxText.measureText(textToDraw);
 
             PointF boxHS = new PointF(inChart.getTouchPoint().x - textWidth / 2.0f, inChart.getBorderWidth());
-            PointF boxHE = new PointF(inChart.getTouchPoint().x + textWidth / 2.0f, inChart.getBorderWidth() + fontSize+ 4);
+            PointF boxHE = new PointF(inChart.getTouchPoint().x + textWidth / 2.0f, inChart.getBorderWidth() + fontSize + 4);
 
             // draw a rectangle
             canvas.drawRect(boxHS.x, boxHS.y, boxHE.x, boxHE.y, mPaintBox);

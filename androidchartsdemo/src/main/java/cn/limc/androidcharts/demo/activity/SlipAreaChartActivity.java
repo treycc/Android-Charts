@@ -79,11 +79,15 @@ public class SlipAreaChartActivity extends BaseActivity {
         slipareachart.setLatitudeColor(Color.GRAY);
         slipareachart.setLatitudeFontColor(Color.WHITE);
         slipareachart.setLongitudeColor(Color.GRAY);
+
+
         slipareachart.setMaxValue(1300);
         slipareachart.setMinValue(700);
         slipareachart.setDisplayFrom(10);
         slipareachart.setDisplayNumber(30);
-        slipareachart.setMinDisplayNumber(5);
+
+        slipareachart.setMaxDisplayNumber(126);
+        slipareachart.setMinDisplayNumber(126);
 //        slipareachart.setZoomBaseLine(IZoomable.ZOOM_BASE_LINE_CENTER);
         slipareachart.setDisplayLongitudeTitle(true);
         slipareachart.setDisplayLatitudeTitle(true);
