@@ -74,12 +74,15 @@ public class GridChartActivity extends Activity {
         gridchart.setLongitudeNum(6);
         gridchart.setDataQuadrantPaddingTop(5);
         gridchart.setDataQuadrantPaddingBottom(5);
-        gridchart.setDataQuadrantPaddingLeft(5);
+        gridchart.setDataQuadrantPaddingLeft(100);
         gridchart.setDataQuadrantPaddingRight(5);
-        // gridchart.setAxisYTitleQuadrantWidth(50);
+
+//         gridchart.setAxisYTitleQuadrantWidth(50);
         // gridchart.setAxisXTitleQuadrantHeight(20);
+
+
         gridchart.setAxisXPosition(Axis.AXIS_X_POSITION_BOTTOM);
-        gridchart.setAxisYPosition(Axis.AXIS_Y_POSITION_RIGHT);
+        gridchart.setAxisYPosition(Axis.AXIS_Y_POSITION_LEFT);
         gridchart.getSimpleGrid().setLatitudeTitles(ytitle);
         gridchart.getSimpleGrid().setLongitudeTitles(xtitle);
         gridchart.setLongitudeFontSize(14);

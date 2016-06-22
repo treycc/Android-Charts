@@ -41,7 +41,7 @@ public class Minutes2chart extends LineChart implements ISlipable {
     @Override
     public void drawData(Canvas canvas) {
         super.drawData(canvas);
-        drawAreas(canvas);
+//        drawAreas(canvas);
     }
 
     protected OnSlipGestureListener onSlipGestureListener = new OnSlipGestureListener();

@@ -39,8 +39,8 @@ import android.graphics.Paint.Style;
  *   <p> </p>
  *
  * @author limc
- * @version v1.0 
- * 
+ * @version v1.0
+ *
  * History: <br>
  * 2014/09/01 limc create v1.0 <br>
  *
@@ -48,7 +48,7 @@ import android.graphics.Paint.Style;
 public class SimpleGrid implements IFlexableGrid {
 
     protected GridChart inChart;
-    
+
     /**
      * <p>
      * Color of grid‘s longitude line
@@ -74,8 +74,8 @@ public class SimpleGrid implements IFlexableGrid {
      * </p>
      */
     protected int latitudeColor = DEFAULT_LAITUDE_COLOR;
-    
-    
+
+
     /**
      * <p>
      * Should display the degrees in X axis?
@@ -90,8 +90,8 @@ public class SimpleGrid implements IFlexableGrid {
     protected boolean displayLongitudeTitle = DEFAULT_DISPLAY_LONGITUDE_TITLE;
 
     protected float longitudeWidth = DEFAULT_LONGITUDE_WIDTH;
-    
-    
+
+
     /**
      * <p>
      * Should display the degrees in Y axis?
@@ -106,8 +106,8 @@ public class SimpleGrid implements IFlexableGrid {
     protected boolean displayLatitudeTitle = DEFAULT_DISPLAY_LATITUDE_TITLE;
 
     protected float latitudeWidth = DEFAULT_LATITUDE_WIDTH;
-    
-    
+
+
 
     /**
      * <p>
@@ -251,8 +251,8 @@ public class SimpleGrid implements IFlexableGrid {
      * </p>
      */
     protected int latitudeFontSize = DEFAULT_LATITUDE_FONT_SIZE;
-    
-    
+
+
     /**
      * <p>
      * Titles Array for display of X axis
@@ -291,15 +291,15 @@ public class SimpleGrid implements IFlexableGrid {
      * </p>
      */
     private int latitudeMaxTitleLength = DEFAULT_LATITUDE_MAX_TITLE_LENGTH;
-    
+
     /**
-     * 
+     *
      */
     public SimpleGrid (GridChart inChart) {
         super();
         this.inChart = inChart;
     }
-    
+
     public void drawGrid(Canvas canvas){
         if (displayLongitude) {
             drawLongitudeLine(canvas);
@@ -319,7 +319,7 @@ public class SimpleGrid implements IFlexableGrid {
             drawLatitudeTitle(canvas);
         }
     }
-    
+
     /**
      * @return the displayLongitudeTitle
      */
@@ -454,7 +454,7 @@ public class SimpleGrid implements IFlexableGrid {
     public void setDashEffect(PathEffect dashEffect) {
         this.dashEffect = dashEffect;
     }
-    
+
     /**
      * @return the longitudeWidth
      */
@@ -542,7 +542,7 @@ public class SimpleGrid implements IFlexableGrid {
     public void setLatitudeFontSize(int latitudeFontSize) {
         this.latitudeFontSize = latitudeFontSize;
     }
-    
+
     /**
      * @return the longitudeColor
      */
@@ -572,8 +572,8 @@ public class SimpleGrid implements IFlexableGrid {
     public void setLatitudeColor(int latitudeColor) {
         this.latitudeColor = latitudeColor;
     }
-    
-    
+
+
     /**
      * @return the longitudeTitles
      */
@@ -619,16 +619,16 @@ public class SimpleGrid implements IFlexableGrid {
         this.latitudeMaxTitleLength = latitudeMaxTitleLength;
     }
 
-    
-    
+
+
     public float longitudePostOffset(){
         return inChart.getDataQuadrant().getPaddingWidth() / (longitudeTitles.size() - 1);
     }
-    
+
     public float longitudeOffset(){
         return inChart.getDataQuadrant().getPaddingStartX();
     }
-    
+
     /**
      * <p>
      * draw longitude lines
@@ -639,7 +639,7 @@ public class SimpleGrid implements IFlexableGrid {
      * <p>
      * 绘制经线
      * </p>
-     * 
+     *
      * @param canvas
      */
     protected void drawLongitudeLine(Canvas canvas) {
@@ -683,7 +683,7 @@ public class SimpleGrid implements IFlexableGrid {
      * <p>
      * 绘制经线
      * </p>
-     * 
+     *
      * @param canvas
      */
     protected void drawLongitudeTitle(Canvas canvas) {
@@ -733,7 +733,7 @@ public class SimpleGrid implements IFlexableGrid {
      * <p>
      * 绘制纬线
      * </p>
-     * 
+     *
      * @param canvas
      */
     protected void drawLatitudeLine(Canvas canvas) {
@@ -751,8 +751,8 @@ public class SimpleGrid implements IFlexableGrid {
             return;
         }
 
-        float length = inChart.getDataQuadrant().getWidth();
-        
+        float length = inChart.getDataQuadrant().getWidth() - inChart.getDataQuadrantPaddingLeft();
+
         Paint mPaintLine = new Paint();
         mPaintLine.setStyle(Style.STROKE);
         mPaintLine.setColor(latitudeColor);
@@ -783,7 +783,7 @@ public class SimpleGrid implements IFlexableGrid {
 //                canvas.drawPath(path, mPaintLine);
 //            }
 //        } else {
-            float startFrom = inChart.getBorderWidth();
+            float startFrom = inChart.getBorderWidth() + inChart.getDataQuadrantPaddingLeft();
             for (int i = 0; i < latitudeTitles.size(); i++) {
                 Path path = new Path();
                 path.moveTo(startFrom, offset - i * postOffset);
@@ -803,7 +803,7 @@ public class SimpleGrid implements IFlexableGrid {
      * <p>
      * 绘制纬线
      * </p>
-     * 
+     *
      * @param canvas
      */
     protected void drawLatitudeTitle(Canvas canvas) {
@@ -830,14 +830,14 @@ public class SimpleGrid implements IFlexableGrid {
                 - inChart.getDataQuadrant().getPaddingBottom();
 
 //        if (inChart.getAxisY().getPosition() == IAxis.AXIS_Y_POSITION_LEFT) {
-            float startFromLeft = inChart.getBorderWidth();
+            float startFromLeft = inChart.getBorderWidth() + inChart.getDataQuadrantPaddingLeft();
             for (int i = 0; i < latitudeTitles.size(); i++) {
                 if (latitudeTitles.size() - 1 == i) {
-                    canvas.drawText(latitudeTitles.get(i), startFromLeft, offset
+                    canvas.drawText(latitudeTitles.get(i), startFromLeft - mPaintFont.measureText(latitudeTitles.get(i)), offset
                                     - i * postOffset + latitudeFontSize + 2,
                             mPaintFont);
                 } else {
-                    canvas.drawText(latitudeTitles.get(i), startFromLeft, offset
+                    canvas.drawText(latitudeTitles.get(i), startFromLeft - mPaintFont.measureText(latitudeTitles.get(i)), offset
                             - i * postOffset - 2,
                             mPaintFont);
                 }
@@ -845,25 +845,25 @@ public class SimpleGrid implements IFlexableGrid {
 //        } else {
 
 
-        mPaintFont.setTextAlign(Paint.Align.RIGHT);
-
-            float startFromRight = inChart.getWidth() - inChart.getBorderWidth() ;
-
-            for (int i = 0; i < latitudeTitles.size(); i++) {
-
-                if (latitudeTitles.size() - 1 == i) {
-//                    canvas.drawText(latitudeTitles.get(i), startFromRight,
-//                            inChart.getHeight() - - inChart.getAxisX().getHeight() - inChart.getAxisX().getLineWidth()
-//                            - inChart.getBorderWidth() - 2f, mPaintFont);
-                    canvas.drawText(latitudeTitles.get(i), startFromRight, offset
-                                    - i * postOffset + latitudeFontSize + 2,
-                            mPaintFont);
-                } else {
-                    canvas.drawText(latitudeTitles.get(i), startFromRight, offset
-                            - i * postOffset - 2,
-                            mPaintFont);
-                }
-            }
+//        mPaintFont.setTextAlign(Paint.Align.RIGHT);
+//
+//            float startFromRight = inChart.getWidth() - inChart.getBorderWidth() ;
+//
+//            for (int i = 0; i < latitudeTitles.size(); i++) {
+//
+//                if (latitudeTitles.size() - 1 == i) {
+////                    canvas.drawText(latitudeTitles.get(i), startFromRight,
+////                            inChart.getHeight() - - inChart.getAxisX().getHeight() - inChart.getAxisX().getLineWidth()
+////                            - inChart.getBorderWidth() - 2f, mPaintFont);
+//                    canvas.drawText(latitudeTitles.get(i), startFromRight, offset
+//                                    - i * postOffset + latitudeFontSize + 2,
+//                            mPaintFont);
+//                } else {
+//                    canvas.drawText(latitudeTitles.get(i), startFromRight, offset
+//                            - i * postOffset - 2,
+//                            mPaintFont);
+//                }
+//            }
 //        }
     }
 }

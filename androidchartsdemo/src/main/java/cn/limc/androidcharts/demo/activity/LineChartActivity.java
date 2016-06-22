@@ -66,7 +66,7 @@ public class LineChartActivity extends BaseActivity {
         MA5.setTitle("MA5");
         MA5.setLineColor(Color.WHITE);
         MA5.setLineData(initMA(5));
-        lines.add(MA5);
+//        lines.add(MA5);
 
         // 计算10日均线
         LineEntity<DateValueEntity> MA10 = new LineEntity<DateValueEntity>();
@@ -81,7 +81,7 @@ public class LineChartActivity extends BaseActivity {
         MA25.setTitle("MA25");
         MA25.setLineColor(Color.GREEN);
         MA25.setLineData(initMA(25));
-        lines.add(MA25);
+//        lines.add(MA25);
 
         linechart.setAxisXColor(Color.LTGRAY);
         linechart.setAxisYColor(Color.LTGRAY);
@@ -93,6 +93,7 @@ public class LineChartActivity extends BaseActivity {
         linechart.setLongitudeColor(Color.GRAY);
 
 
+
         linechart.setMaxValue(280);
         linechart.setMinValue(240);
         linechart.setMaxPointNum(36);
@@ -100,7 +101,6 @@ public class LineChartActivity extends BaseActivity {
         linechart.setLongitudeNum(6);
         linechart.setMaxDisplayNumber(126);
         linechart.setMinDisplayNumber(126);
-
 
 
 
