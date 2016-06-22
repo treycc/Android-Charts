@@ -107,6 +107,6 @@ public class HorizontalAxis extends Axis {
         mPaint.setColor(lineColor);
         mPaint.setStrokeWidth(lineWidth);
 
-        canvas.drawLine(inChart.getBorderWidth(), postY, length, postY, mPaint);
+        canvas.drawLine(inChart.getBorderWidth() + inChart.getDataQuadrantPaddingLeft(), postY, length, postY, mPaint);
     }
 }

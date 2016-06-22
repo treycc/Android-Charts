@@ -93,7 +93,7 @@ public class VerticalAxis extends Axis {
      * @param canvas
      */
     public void draw(Canvas canvas) {
-        float length = inChart.getHeight() - inChart.getAxisX().getHeight()
+        float length = inChart.getHeight()
                 - inChart.getBorderWidth();
         float postX;
         if (position == AXIS_Y_POSITION_LEFT) {
